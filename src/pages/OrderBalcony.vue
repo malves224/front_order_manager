@@ -1,8 +1,13 @@
 <template>
   <div>
-    <header-client></header-client>
-    <info-detail></info-detail>
-    <products-list></products-list>
+    <header>
+      <header-client></header-client>
+    </header>
+
+    <body>
+      <info-detail></info-detail>
+      <products-list></products-list>
+    </body>
     <nav-client></nav-client>
   </div>
 </template>
@@ -23,8 +28,6 @@ export default {
     NavClient
   }
 }
-</script>
-  
-    InfoDetail
+</script>  
 <style></style>
   
