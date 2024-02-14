@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <order-balcony></order-balcony>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import OrderBalcony from './pages/OrderBalcony.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    OrderBalcony
   }
 }
 </script>
