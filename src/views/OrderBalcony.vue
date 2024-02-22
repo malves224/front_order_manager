@@ -8,7 +8,6 @@
       <info-detail></info-detail>
       <products-list></products-list>
     </body>
-    <nav-client></nav-client>
   </div>
 </template>
   
@@ -29,5 +28,9 @@ export default {
   }
 }
 </script>  
-<style></style>
+<style>
+body {
+  padding-bottom: 30px !important;
+}
+</style>
   
