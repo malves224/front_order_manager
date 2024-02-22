@@ -1,19 +1,8 @@
 <template>
   <div id="app">
-    <order-balcony></order-balcony>
+    <router-view />
   </div>
 </template>
-
-<script>
-import OrderBalcony from './pages/OrderBalcony.vue'
-
-export default {
-  name: 'App',
-  components: {
-    OrderBalcony
-  }
-}
-</script>
 
 <style>
 #app {
@@ -21,6 +10,15 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  color: #2c3e50;
+}
+
+nav {
+  padding: 30px;
+}
+
+nav a {
+  font-weight: bold;
   color: #2c3e50;
 }
 </style>
