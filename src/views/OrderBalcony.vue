@@ -15,7 +15,6 @@
 import InfoDetail from '@/components/InfoDetail.vue'
 import HeaderClient from '@/components/HeaderClient.vue'
 import ProductsList from '@/components/products/ProductList.vue'
-import NavClient from '@/components/NavClient.vue'
 
 
 export default {
@@ -24,7 +23,6 @@ export default {
     HeaderClient,
     InfoDetail,
     ProductsList,
-    NavClient
   }
 }
 </script>  
