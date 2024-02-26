@@ -13,6 +13,10 @@
   color: #2c3e50;
 }
 
+p {
+  color: var(--bs-gray-500)
+}
+
 nav {
   padding: 30px;
 }
