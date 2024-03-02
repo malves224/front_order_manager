@@ -14,36 +14,63 @@
       </div>
       <b-form class="form-modal" @submit.prevent="submit">
         <label>Quantidade</label>
-        <b-form-spinbutton id="demo-sb" v-model="quantity" />
+        <b-form-spinbutton id="demo-sb" v-model="attrAditional.quantity" />
         <label>Observação</label>
-        <b-textarea no-resize v-model="observation" />
-        <b-button :disabled="this.quantity < 1" type="submit" variant="primary">Adicionar: {{ total }}</b-button>
+        <b-textarea no-resize v-model="attrAditional.observation" />
+        <b-button :disabled="this.attrAditional.quantity < 1" type="submit" variant="primary">Adicionar: {{ total
+        }}</b-button>
         <b-button @click="closeModal" variant="outline-primary">Cancelar</b-button>
       </b-form>
     </body>
   </b-modal>
 </template>
 <script>
+import Chart from '@/services/localStorage/chart';
+import Swal from 'sweetalert2';
+
 export default {
   props: ['item'],
   data() {
     return {
-      observation: '',
-      quantity: 0,
+      attrAditional: {
+        observation: '',
+        quantity: 0,
+      },
+      chart: new Chart(),
     }
   },
   methods: {
     closeModal() {
       this.$bvModal.hide(`product-modal-${this.item.id}`)
     },
+    clear() {
+      this.attrAditional = {
+        observation: '',
+        quantity: 0,
+      }
+    },
     submit() {
-      // a bota no carrinho 
-      console.log('botaaaaaaaaaaaa no carrinho', this.item)
+      this.clear();
+      this.chart.add({ ...this.item, ...this.attrAditional });
+      Swal.fire({
+        icon: "success",
+        title: "Produto adicionado ao carrinho!",
+        showDenyButton: true,
+        confirmButtonText: "Continuar comprando",
+        denyButtonText: `Ir para o carrinho`,
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.closeModal();
+        } else if (result.isDenied) {
+          this.$router.push('/order/chart')
+        }
+      });
     }
   },
   computed: {
     total() {
-      return this.$formatCurrency(this.quantity * this.item.value)
+      return this.$formatCurrency(this.attrAditional.quantity * this.item.value)
     }
   }
 }
