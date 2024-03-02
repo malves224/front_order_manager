@@ -10,6 +10,7 @@ class Chart extends LocalStorage {
     if (itemPrevious) {
       const additional = {
         quantity: itemPrevious.quantity + item.quantity,
+        total: itemPrevious.total + item.total,
         observation: item.observation ? `${itemPrevious.observation}\n ${item.observation}` : itemPrevious.observation,
       };
 

@@ -35,6 +35,7 @@ export default {
       attrAditional: {
         observation: '',
         quantity: 0,
+        total: 0
       },
       chart: new Chart(),
     }
@@ -47,10 +48,10 @@ export default {
       this.attrAditional = {
         observation: '',
         quantity: 0,
+        total: 0
       }
     },
     submit() {
-      this.clear();
       this.chart.add({ ...this.item, ...this.attrAditional });
       Swal.fire({
         icon: "success",
@@ -66,6 +67,12 @@ export default {
           this.$router.push('/order/chart')
         }
       });
+      this.clear();
+    }
+  },
+  watch: {
+    'attrAditional.quantity'() {
+      this.attrAditional.total = this.attrAditional.quantity * this.item.value
     }
   },
   computed: {
