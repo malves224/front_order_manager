@@ -14,7 +14,14 @@
 }
 
 p {
-  color: var(--bs-gray-500)
+  color: var(--bs-gray-500);
+  margin: 0 !important
+}
+
+
+* {
+  margin: 0;
+  padding: 0
 }
 
 nav {

@@ -18,6 +18,18 @@ class Chart extends LocalStorage {
     }
     super.add(item)
   }
+
+  total() {
+    return this.get().reduce((acc, item) => {
+      return acc + item.total;
+    }, 0);
+  }
+
+  count() {
+    return this.get().reduce((acc, item) => {
+      return acc + item.quantity;
+    }, 0);
+  }
 }
 
 export default Chart;
