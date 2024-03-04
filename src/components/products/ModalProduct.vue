@@ -25,7 +25,8 @@
   </b-modal>
 </template>
 <script>
-import Chart from '@/services/localStorage/chart';
+import { useCartStore } from '@/store/cart';
+import { mapStores } from 'pinia';
 import Swal from 'sweetalert2';
 
 export default {
@@ -36,8 +37,7 @@ export default {
         observation: '',
         quantity: 0,
         total: 0
-      },
-      chart: new Chart(),
+      }
     }
   },
   methods: {
@@ -52,7 +52,7 @@ export default {
       }
     },
     submit() {
-      this.chart.add({ ...this.item, ...this.attrAditional });
+      this.cartStore.add({ ...this.item, ...this.attrAditional });
       Swal.fire({
         icon: "success",
         title: "Produto adicionado ao carrinho!",
@@ -64,7 +64,7 @@ export default {
         if (result.isConfirmed) {
           this.closeModal();
         } else if (result.isDenied) {
-          this.$router.push('/order/chart')
+          this.$router.push('/order/cart')
         }
       });
       this.clear();
@@ -76,6 +76,7 @@ export default {
     }
   },
   computed: {
+    ...mapStores(useCartStore),
     total() {
       return this.$formatCurrency(this.attrAditional.quantity * this.item.value)
     }
