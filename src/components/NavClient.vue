@@ -1,11 +1,11 @@
 <template>
   <div class="position-nav">
-    <div class="cart-info" v-if="hasCart">
+    <div class="cart-info" v-if="cartStore.total">
       <div class="cart-value">
         <p>Total sem a entrega</p>
         <div class="value-info">
-          <h6>{{ $formatCurrency(chart.total()) }}</h6>
-          <p>/ {{ chart.count() }} items</p>
+          <h6>{{ $formatCurrency(cartStore.total) }}</h6>
+          <p>/ {{ cartStore.count }} items</p>
         </div>
       </div>
       <b-button to="cart" variant="primary">Ver carrinho</b-button>
@@ -21,14 +21,20 @@
   </div>
 </template>
 <script>
-import Chart from '@/services/localStorage/chart';
+import { useCartStore } from '@/store/cart';
+import { mapStores } from 'pinia';
 export default {
   data() {
     return {
       hasCart: true,
-      chart: new Chart()
     }
   },
+  mounted() {
+    this.cartStore.initializeFromLocalStorage();
+  },
+  computed: {
+    ...mapStores(useCartStore)
+  }
 }
 </script>
 <style>
