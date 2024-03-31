@@ -6,6 +6,10 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/',
+    redirect: '/order'
+  },
+  {
     path: '/order',
     component: () => import('../views/OrderView'),
     children: [
