@@ -28,11 +28,13 @@
 import { useCartStore } from '@/store/cart';
 import { mapStores } from 'pinia';
 import Swal from 'sweetalert2';
+import LocalStorage from '@/services/localStorage/localStorage';
 
 export default {
   props: ['item'],
   data() {
     return {
+      customerStorage: new LocalStorage('customer'),
       attrAditional: {
         observation: '',
         quantity: 0,
@@ -44,6 +46,9 @@ export default {
     closeModal() {
       this.$bvModal.hide(`product-modal-${this.item.id}`)
     },
+    openLogin() {
+      this.$bvModal.show(`customer-login-modal-${this.item.id}`)
+    },
     clear() {
       this.attrAditional = {
         observation: '',
@@ -51,8 +56,7 @@ export default {
         total: 0
       }
     },
-    submit() {
-      this.cartStore.add({ ...this.item, ...this.attrAditional });
+    alertItemAdded() {
       Swal.fire({
         icon: "success",
         title: "Produto adicionado ao carrinho!",
@@ -67,7 +71,35 @@ export default {
           this.$router.push('/order/cart')
         }
       });
-      this.clear();
+    },
+    async indicateUser() {
+      const { value: formValues } = await Swal.fire({
+        title: "Identifique-se",
+        html: `
+            <input id="swal-input1" class="swal2-input">
+            <input id="swal-input2" class="swal2-input">
+          `,
+        focusConfirm: false,
+        preConfirm: () => {
+          return [
+            document.getElementById("swal-input1").value,
+            document.getElementById("swal-input2").value
+          ];
+        }
+      });
+      if (formValues) {
+        Swal.fire(JSON.stringify(formValues));
+      }
+    },
+    submit() {
+      if (this.customerStorage.get()?.token) {
+        this.alertItemAdded();
+        this.cartStore.add({ ...this.item, ...this.attrAditional });
+        this.clear();
+      } else {
+        this.openLogin();
+      }
+
     }
   },
   watch: {

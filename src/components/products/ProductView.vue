@@ -9,20 +9,23 @@
     </div>
     <b-img height="80px" :src="item.img_url" />
     <modal-product :item="item"></modal-product>
+    <login-modal :id="`customer-login-modal-${item.id}`"></login-modal>
   </div>
 </template>
 <script>
 import ModalProduct from "@/components/products/ModalProduct.vue";
+import LoginModal from "@/components/LoginModal.vue";
 
 export default {
   components: {
-    ModalProduct
+    ModalProduct,
+    LoginModal,
   },
   props: ['item'],
   methods: {
     openModal() {
       this.$bvModal.show(`product-modal-${this.item.id}`)
-    }
+    },
   },
 }
 </script>
