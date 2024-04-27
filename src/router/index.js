@@ -18,6 +18,13 @@ const routes = [
     ]
   },
   {
+    path: '/cart',
+    component: () => import('../views/CartView'),
+    children: [
+    { path: 'conclude', component: () => import('../views/OrderList') }
+    ]
+  },   
+  {
     path: '/gestor',
     name: 'Gestor',
     component: () => import('../views/GestorView')
