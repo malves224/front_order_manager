@@ -1,10 +1,6 @@
 <template >
   <div class="cart-view">
-    <div class="action-cart">
-      <a>voltar</a>
-      <h1>carrinho</h1>
-      <span>limpar</span>
-    </div>
+    <ActionCart></ActionCart>
     <div class="info-client-container">
       <b-img src="https://assets.turbologo.com/blog/pt/2019/07/19133836/mcdonalds-golden-arches-logo-1961.jpg" />
       <div class="info-client-title">
@@ -35,13 +31,15 @@
   </div>
 </template>
 <script>
-import NavCart from '@/components/NavCart.vue'
+import NavCart from '@/components/cart/NavCart.vue'
+import ActionCart from '@/components/cart/ActionCart.vue'
 import { useCartStore } from '@/store/cart';
 import { mapStores } from 'pinia';
 
 export default {
   components: {
-    NavCart
+    NavCart,
+    ActionCart
   },
   computed: {
     ...mapStores(useCartStore)
@@ -50,13 +48,6 @@ export default {
 </script>
 <style>
 .cart-view {}
-
-.action-cart {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
 
 .info-client-container {
   display: flex;

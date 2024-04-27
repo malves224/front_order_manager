@@ -68,7 +68,7 @@ export default {
         if (result.isConfirmed) {
           this.closeModal();
         } else if (result.isDenied) {
-          this.$router.push('/order/cart')
+          this.$router.push('/cart')
         }
       });
     },

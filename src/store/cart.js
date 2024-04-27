@@ -50,5 +50,9 @@ export const useCartStore = defineStore('cart', {
     updateCart() {
       cartLocalStorage.set(this.cart);
     },
+    clear() {
+      this.cart = [];
+      this.updateCart();
+    }
   }
 });
