@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import NavCart from '@/components/NavCart.vue'
+import NavCart from '@/components/cart/NavCart.vue'
 
 export default {
   components: {
