@@ -17,7 +17,8 @@
         <b-form-spinbutton id="demo-sb" v-model="attrAditional.quantity" />
         <label>Observação</label>
         <b-textarea no-resize v-model="attrAditional.observation" />
-        <b-button :disabled="this.attrAditional.quantity < 1" type="submit" variant="primary">Adicionar: {{ total
+        <b-button v-if="editing" type="submit" variant="primary">Salvar</b-button>
+        <b-button v-else :disabled="this.attrAditional.quantity < 1" type="submit" variant="primary">Adicionar: {{ total
         }}</b-button>
         <b-button @click="closeModal" variant="outline-primary">Cancelar</b-button>
       </b-form>
@@ -36,14 +37,16 @@ export default {
     return {
       customerStorage: new LocalStorage('customer'),
       attrAditional: {
-        observation: '',
-        quantity: 0,
-        total: 0
-      }
+        observation: this.item.observation || '',
+        quantity: this.item.quantity || 0,
+        total: this.item.total || 0
+      },
+      editing: this.item.quantity > 0
     }
   },
   methods: {
     closeModal() {
+      this.clear();
       this.$bvModal.hide(`product-modal-${this.item.id}`)
     },
     openLogin() {
@@ -51,9 +54,9 @@ export default {
     },
     clear() {
       this.attrAditional = {
-        observation: '',
-        quantity: 0,
-        total: 0
+        observation: this.item.observation || '',
+        quantity: this.item.quantity || 0,
+        total: this.item.total || 0
       }
     },
     alertItemAdded() {
@@ -92,14 +95,17 @@ export default {
       }
     },
     submit() {
-      if (this.customerStorage.get()?.token) {
-        this.alertItemAdded();
-        this.cartStore.add({ ...this.item, ...this.attrAditional });
-        this.clear();
+      if (this.editing) {
+        this.cartStore.update({ ...this.item, ...this.attrAditional }, this.item.id);
+        this.closeModal();
       } else {
-        this.openLogin();
+        if (this.customerStorage.get()?.token) {
+          this.alertItemAdded();
+          this.cartStore.add({ ...this.item, ...this.attrAditional });
+        } else {
+          this.openLogin();
+        }
       }
-
     }
   },
   watch: {

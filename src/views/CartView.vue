@@ -1,23 +1,17 @@
 <template >
   <div class="cart-view">
     <ActionCart></ActionCart>
-    <div class="info-client-container">
+    <div class="mt-2 info-client-container">
       <b-img src="https://assets.turbologo.com/blog/pt/2019/07/19133836/mcdonalds-golden-arches-logo-1961.jpg" />
       <div class="info-client-title">
-        <h3>Mc donalds</h3>
-        <a>Adicionar mais itens</a>
+        <h3 class="mb-0">Mc donalds</h3>
+        <b-button to="/order" class="button-none">Adicionar mais itens</b-button>
       </div>
     </div>
     <div class="cart-items-container">
       <h3>Itens adicionardos</h3>
-      <div class="cart-item" v-for="item in cartStore.cart" :key="item.id">
-        <b-img :src="item.img_url" />
-        <div>
-          <h4>{{ item.name }}</h4>
-          <p>{{ item.description }}</p>
-          <h5>{{ item.value }}</h5>
-        </div>
-        <span>Adicionar mais itens</span>
+      <div class="w-100">
+        <ItemCard v-for="item in cartStore.cart" :key="item.id" :item="item" />
       </div>
     </div>
     <div class="resume-cart">
@@ -33,13 +27,15 @@
 <script>
 import NavCart from '@/components/cart/NavCart.vue'
 import ActionCart from '@/components/cart/ActionCart.vue'
+import ItemCard from '@/components/cart/ItemCart.vue'
 import { useCartStore } from '@/store/cart';
 import { mapStores } from 'pinia';
 
 export default {
   components: {
     NavCart,
-    ActionCart
+    ActionCart,
+    ItemCard
   },
   computed: {
     ...mapStores(useCartStore)
@@ -47,14 +43,12 @@ export default {
 }
 </script>
 <style>
-.cart-view {}
-
 .info-client-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
   flex-direction: row;
+  padding: 0 10px;
 }
 
 .info-client-container>img {
@@ -66,18 +60,21 @@ export default {
 .info-client-title {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: space-between;
+  align-items: self-start;
   width: 100%;
+  margin-left: 10px;
+}
+
+.cart-items-container {
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  margin-top: 30px;
 }
 
 .cart-view {
   padding: 10px;
-}
-
-.cart-item>img {
-  height: 80px;
-  width: 80px;
 }
 
 .position-nav-cart {
