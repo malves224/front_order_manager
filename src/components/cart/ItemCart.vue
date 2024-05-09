@@ -8,25 +8,48 @@
     <div class="item-cart-info">
       <h4>{{ item.name }}</h4>
       <p>2 Hambuergues queijo moolho...</p>
+      <span>{{ $formatCurrency(item.total) }}</span>
     </div>
-    <div>
-      + 0 -
-    </div>
-    <modal-product :item="item"></modal-product>
+    <b-form-spinbutton min="0" class="w-25 h-100" v-model="quantity" @input="update">
+      <template v-if="quantity === 1" #decrement>
+        <b-icon icon="trash-fill" />
+      </template>
+    </b-form-spinbutton>
+    <modal-product @update-item="handleUpdateItem" :item="item"></modal-product>
   </div>
 </template>
 <script>
 import ModalProduct from "@/components/products/ModalProduct.vue";
+import { useCartStore } from "@/store/cart";
+import { mapStores } from "pinia";
 
 export default {
   components: {
     ModalProduct,
   },
   props: ['item'],
+  data() {
+    return {
+      quantity: this.item.quantity,
+    }
+  },
   methods: {
     editItem() {
       this.$bvModal.show(`product-modal-${this.item.id}`)
     },
+    update(value) {
+      if (value <= 0) {
+        this.cartStore.delete(this.item.id);
+      } else {
+        this.cartStore.update({ ...this.item, quantity: value }, this.item.id);
+      }
+    },
+    handleUpdateItem() {
+      this.quantity = this.cartStore.getItem(this.item.id).quantity;
+    }
+  },
+  computed: {
+    ...mapStores(useCartStore),
   },
 }
 </script>
@@ -35,10 +58,24 @@ export default {
   background: var(--bs-gray-100);
   border-radius: 50%;
   margin: 0;
-  width: 33%;
-  height: 33%;
+  width: 40%;
+  height: 40%;
   box-shadow: 1px 1px 3px var(--bs-body-color);
-  font-size: 14px;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.b-form-spinbutton>button {
+  padding: 0;
+}
+
+.spinbutton-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
 }
 
 .item-cart {
@@ -65,6 +102,7 @@ export default {
   flex-direction: column;
   align-items: self-start;
   width: 70%;
+  margin-left: 10px;
 }
 
 .item-cart-info>h4 {

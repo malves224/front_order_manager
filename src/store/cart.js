@@ -42,6 +42,10 @@ export const useCartStore = defineStore('cart', {
       }
       this.updateCart();
     },
+    delete(id) {
+      this.cart = this.cart.filter((item) => item.id !== id);
+      this.updateCart();
+    },
     initializeFromLocalStorage() {
       if (this.cart.length) return
       const storedcart = cartLocalStorage.get();
@@ -53,6 +57,9 @@ export const useCartStore = defineStore('cart', {
     clear() {
       this.cart = [];
       this.updateCart();
+    },
+    getItem(id) {
+      return this.cart.find((item) => item.id === id);
     }
   }
 });

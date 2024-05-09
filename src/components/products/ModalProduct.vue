@@ -96,7 +96,9 @@ export default {
     },
     submit() {
       if (this.editing) {
-        this.cartStore.update({ ...this.item, ...this.attrAditional }, this.item.id);
+        const payload = { ...this.item, ...this.attrAditional };
+        this.cartStore.update(payload, this.item.id);
+        this.$emit('update-item');
         this.closeModal();
       } else {
         if (this.customerStorage.get()?.token) {
