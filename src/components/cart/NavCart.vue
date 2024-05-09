@@ -7,7 +7,7 @@
         <p>/ {{ cartStore.count }} item{{ cartStore.total > 1 ? 's' : '' }}</p>
       </div>
     </div>
-    <b-button class="ms-3" to="cart" variant="primary">Ver carrinho</b-button>
+    <b-button class="ms-3" :to="nextPath" variant="primary">{{ contentButton }}</b-button>
   </div>
 </template>
 <script>
@@ -18,13 +18,24 @@ export default {
   data() {
     return {
       hasCart: true,
+      currentPath: ''
     }
   },
   mounted() {
     this.cartStore.initializeFromLocalStorage();
+    this.currentPath = this.$route.path;
+    this.$router.afterEach((to) => {
+      this.currentPath = to.path;
+    });
   },
   computed: {
-    ...mapStores(useCartStore)
+    ...mapStores(useCartStore),
+    contentButton() {
+      return this.currentPath === '/cart' ? 'Continuar' : 'Ver carrinho';
+    },
+    nextPath() {
+      return this.currentPath === '/cart' ? '/order/confirm' : '/cart';
+    }
   }
 }
 </script>
