@@ -10,14 +10,25 @@
     </div>
     <div class="cart-items-container">
       <h3>Itens adicionardos</h3>
-      <div class="w-100">
+      <div class="cart-items w-100">
         <ItemCard v-for="item in cartStore.cart" :key="item.id" :item="item" />
+        <b-button to="/order" class="mt-2 align-self-center button-none">Adicionar mais itens</b-button>
       </div>
     </div>
     <div class="resume-cart">
       <h3>Resumo de valores</h3>
-      <p>Subtotal {{ cartStore.total }}</p>
-      <p>Taxa de entrega</p>
+      <div class="cart-resume-item">
+        <p>Subtotal</p>
+        <p> {{ $formatCurrency(cartStore.total) }} </p>
+      </div>
+      <div class="cart-resume-item" >
+        <p>Taxa de entrega</p>
+        <p> R$ 7,00 </p>
+      </div>
+      <div class="cart-resume-item">
+        <span>Total</span>
+        <span> {{ $formatCurrency(cartStore.total + 7) }} </span>
+      </div>
     </div>
     <div class="position-nav-cart">
       <NavCart></NavCart>
@@ -82,7 +93,28 @@ export default {
   display: flex;
   flex-flow: column;
   align-items: flex-start;
-  margin-top: 30px;
+  margin: 25px 0;
+}
+
+.cart-items {
+  display: flex;
+  flex-flow: column;
+  overflow-y: scroll;
+  justify-content: space-between;
+}
+
+.cart-resume-item {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.resume-cart {
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  margin-top: 25px;
 }
 
 .cart-view {
@@ -90,6 +122,13 @@ export default {
 }
 
 .position-nav-cart {
+  bottom: -10px;
+  left: 0;
   width: 100%;
+  position: fixed;
+  display: flex;
+  flex-flow: column-reverse;
+  padding: 5px;
 }
+
 </style>
