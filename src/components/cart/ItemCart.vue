@@ -48,6 +48,12 @@ export default {
       this.quantity = this.cartStore.getItem(this.item.id).quantity;
     }
   },
+  watch: {
+    quantity(value) {
+      const payload = { quantity: value, total: this.item.value * value };
+      this.cartStore.update(payload, this.item.id);
+    }
+  },
   computed: {
     ...mapStores(useCartStore),
   },
