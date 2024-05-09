@@ -10,7 +10,7 @@
       <p>2 Hambuergues queijo moolho...</p>
       <span>{{ $formatCurrency(item.total) }}</span>
     </div>
-    <b-form-spinbutton min="0" class="w-25 h-100" v-model="quantity" @input="update">
+    <b-form-spinbutton min="0" class="item-spin h-100" v-model="quantity" @input="update">
       <template v-if="quantity === 1" #decrement>
         <b-icon icon="trash-fill" />
       </template>
@@ -82,6 +82,14 @@ export default {
   justify-content: center;
   align-items: center;
   width: 20%;
+}
+
+.item-spin {
+  width: 29%;
+}
+
+.item-spin>output{
+  padding: 0;
 }
 
 .item-cart {
