@@ -5,11 +5,12 @@
         <b-icon icon="pencil-fill"></b-icon>
       </div>
     </div>
-    <div class="item-cart-info">
+    <div @click="editItem" class="item-cart-info">
       <h4>{{ item.name }}</h4>
-      <p>2 Hambuergues queijo moolho...</p>
+      <p>2 Hambuergues moolho...</p>
       <span>{{ $formatCurrency(item.total) }}</span>
     </div>
+    <!-- criar proprio componente, para decrementar apenas do key down -->
     <b-form-spinbutton min="0" class="item-spin h-100" v-model="quantity" @input="update">
       <template v-if="quantity === 1" #decrement>
         <b-icon icon="trash-fill" />
@@ -85,7 +86,9 @@ export default {
 }
 
 .item-spin {
+  margin: 12px 0;
   width: 29%;
+  height: 35%;
 }
 
 .item-spin>output{
@@ -97,6 +100,8 @@ export default {
   justify-content: space-evenly;
   width: 100%;
   padding: 0 10px;
+  align-items: center;
+  margin: 10px 0;
 }
 
 .item-cart-img {
