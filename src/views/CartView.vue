@@ -39,6 +39,18 @@ export default {
   },
   computed: {
     ...mapStores(useCartStore)
+  },
+  watch: {
+    'cartStore.cart': {
+      handler(cart) {
+        const beEmpty = !cart.length;
+
+        if (beEmpty) {
+          this.$router.push('/order')
+        }
+      },
+      deep: true
+    }
   }
 }
 </script>
