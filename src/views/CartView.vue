@@ -8,28 +8,7 @@
         <b-button to="/order" class="button-none">Adicionar mais itens</b-button>
       </div>
     </div>
-    <div class="cart-items-container">
-      <h3>Itens adicionardos</h3>
-      <div class="cart-items w-100">
-        <ItemCard v-for="item in cartStore.cart" :key="item.id" :item="item" />
-        <b-button to="/order" class="mt-2 align-self-center button-none">Adicionar mais itens</b-button>
-      </div>
-    </div>
-    <div class="resume-cart">
-      <h3>Resumo de valores</h3>
-      <div class="cart-resume-item">
-        <p>Subtotal</p>
-        <p> {{ $formatCurrency(cartStore.total) }} </p>
-      </div>
-      <div class="cart-resume-item" >
-        <p>Taxa de entrega</p>
-        <p> R$ 7,00 </p>
-      </div>
-      <div class="cart-resume-item">
-        <span>Total</span>
-        <span> {{ $formatCurrency(cartStore.total + 7) }} </span>
-      </div>
-    </div>
+    <ShowItems></ShowItems>
     <div class="position-nav-cart">
       <NavCart></NavCart>
     </div>
@@ -38,30 +17,13 @@
 <script>
 import NavCart from '@/components/cart/NavCart.vue'
 import ActionCart from '@/components/cart/ActionCart.vue'
-import ItemCard from '@/components/cart/ItemCart.vue'
-import { useCartStore } from '@/store/cart';
-import { mapStores } from 'pinia';
+import ShowItems from '@/components/cart/ShowItems.vue'
 
 export default {
   components: {
     NavCart,
     ActionCart,
-    ItemCard
-  },
-  computed: {
-    ...mapStores(useCartStore)
-  },
-  watch: {
-    'cartStore.cart': {
-      handler(cart) {
-        const beEmpty = !cart.length;
-
-        if (beEmpty) {
-          this.$router.push('/order')
-        }
-      },
-      deep: true
-    }
+    ShowItems
   }
 }
 </script>
@@ -87,34 +49,6 @@ export default {
   align-items: self-start;
   width: 100%;
   margin-left: 10px;
-}
-
-.cart-items-container {
-  display: flex;
-  flex-flow: column;
-  align-items: flex-start;
-  margin: 25px 0;
-}
-
-.cart-items {
-  display: flex;
-  flex-flow: column;
-  overflow-y: scroll;
-  justify-content: space-between;
-}
-
-.cart-resume-item {
-  display: flex;
-  flex-flow: row;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.resume-cart {
-  display: flex;
-  flex-flow: column;
-  align-items: flex-start;
-  margin-top: 25px;
 }
 
 .cart-view {
