@@ -34,7 +34,7 @@ export default {
       return this.currentPath === '/cart' ? 'Continuar' : 'Ver carrinho';
     },
     nextPath() {
-      return this.currentPath === '/cart' ? '/order/confirm' : '/cart';
+      return this.currentPath === '/cart' ? '/cart/confirm' : '/cart';
     }
   }
 }

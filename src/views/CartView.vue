@@ -8,7 +8,7 @@
         <b-button to="/order" class="button-none">Adicionar mais itens</b-button>
       </div>
     </div>
-    <ShowItems></ShowItems>
+    <router-view></router-view>
     <div class="position-nav-cart">
       <NavCart></NavCart>
     </div>
@@ -17,13 +17,11 @@
 <script>
 import NavCart from '@/components/cart/NavCart.vue'
 import ActionCart from '@/components/cart/ActionCart.vue'
-import ShowItems from '@/components/cart/ShowItems.vue'
 
 export default {
   components: {
     NavCart,
-    ActionCart,
-    ShowItems
+    ActionCart
   }
 }
 </script>
@@ -64,5 +62,4 @@ export default {
   flex-flow: column-reverse;
   padding: 5px;
 }
-
 </style>
