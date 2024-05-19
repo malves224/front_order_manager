@@ -3,6 +3,8 @@ import App from './App.vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import formatCurrency from './mixins/currencyFormatter'
 import { createPinia, PiniaVuePlugin } from 'pinia'
+import { ActionSheet } from 'vant';
+
 
 Vue.config.productionTip = false
 
@@ -14,6 +16,8 @@ Vue.prototype.$formatCurrency = formatCurrency
 Vue.use(PiniaVuePlugin)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+Vue.use(ActionSheet)
+
 new Vue({
   router,
   pinia: createPinia(),
