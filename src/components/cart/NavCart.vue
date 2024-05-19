@@ -1,7 +1,7 @@
 <template>
   <div class="cart-info" v-if="cartStore.total">
     <div class="cart-value">
-      <p>Total sem a entrega</p>
+      <p>Total sem taxa entrega</p>
       <div class="value-info">
         <h6>{{ $formatCurrency(cartStore.total) }}</h6>
         <p>/ {{ cartStore.count }} item{{ cartStore.total > 1 ? 's' : '' }}</p>
