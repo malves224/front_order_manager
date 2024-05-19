@@ -9,6 +9,10 @@ class Customer extends HttpService {
   async login({ name, phone }) {
     return this.client.post(`${this.namespace}/login`, { name, phone });
   }
+
+  async createAddress(data) {
+    return this.client.post(`${this.namespace}/address`, data);
+  }
 }
 
 export default Customer;
