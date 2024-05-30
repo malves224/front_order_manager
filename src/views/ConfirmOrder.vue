@@ -8,9 +8,7 @@
         </div>
         <b-button @click="showFormAddress = !showFormAddress" class="mt-2 align-self-center button-none">Adicionar endereço</b-button>
         <van-action-sheet style="height: 80vh" v-model="showFormAddress" title="Title">
-          <div class="content">
-            <AddressForm />
-          </div>
+          <AddressForm />
         </van-action-sheet>
     </div>
 </template>

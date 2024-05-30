@@ -3,7 +3,7 @@ import App from './App.vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import formatCurrency from './mixins/currencyFormatter'
 import { createPinia, PiniaVuePlugin } from 'pinia'
-import { ActionSheet } from 'vant';
+import { ActionSheet, Loading } from 'vant';
 
 
 Vue.config.productionTip = false
@@ -17,6 +17,7 @@ Vue.use(PiniaVuePlugin)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(ActionSheet)
+Vue.use(Loading)
 
 new Vue({
   router,
