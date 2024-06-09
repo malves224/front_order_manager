@@ -1,17 +1,16 @@
-
 <template>
-  <b-container class="h-100 mt-4">
-    <b-form @submit.prevent="handleSubmit" class="d-flex flex-column">
-      <b-form-group class="mb-4" label-for="cep">
-        <b-form-input trim :disabled="loading" :formatter="(value) => value.replace(/[a-zA-Z]/g, '')" :state="cepBeValid"
-          id="cep" @input="handleCep" v-model="form.cep" placeholder="Digite seu CEP..." @change="handleCep"
+  <b-container class="h-100">
+    <b-form @submit.prevent="handleSubmit" class="form-address-container d-flex flex-column">
+      <b-form-group class="mb-2 mt-1" label-for="cep">
+        <b-form-input autofocus trim :disabled="loading" :formatter="(value) => value.replace(/[a-zA-Z]/g, '')"
+          :state="cepBeValid" id="cep" @input="handleCep" v-model="form.cep" placeholder="Digite seu CEP..."
           required></b-form-input>
         <b-form-invalid-feedback id="cep">
           {{ cepResponseError }}
         </b-form-invalid-feedback>
       </b-form-group>
       <van-loading v-if="loading">Buscando CEP...</van-loading>
-      <b-card v-if="form.logradouro" body-class="d-flex flex-row">
+      <b-card class="mb-1" v-if="form.logradouro" body-class="address-card d-flex flex-row">
         <p class="h1 me-2 d-flex align-items-center"><b-icon icon="geo-alt"></b-icon></p>
         <div class="d-flex flex-column align-items-start">
           <h5 class="mb-0">{{ form.logradouro }}</h5>
@@ -20,38 +19,32 @@
         </div>
       </b-card>
 
-      <!-- <div class="logradouro-container">
-        <b-form-group label-for="logradouro">
-          <b-form-input id="logradouro" v-model="form.logradouro" placeholder="Nome da rua" required></b-form-input>
-        </b-form-group>
+      <div v-if="cepBeValid" class="form-address-complement">
+        <div class="container-input">
+          <b-form-group label-for="number">
+            <b-form-input :disabled="numberOptional" id="number" v-model="form.number" placeholder="Número *"
+              :required="!numberOptional"></b-form-input>
+          </b-form-group>
+          <b-form-checkbox id="number" class="align-self-start" @change="toggleOptional('number')">
+            <label id="number" class="ms-2">Sem número</label>
+          </b-form-checkbox>
+        </div>
 
-        <b-form-group label-for="number">
-          <b-form-input id="number" v-model="form.number" placeholder="Número" required></b-form-input>
+        <div class="container-input">
+          <b-form-group label-for="complement">
+            <b-form-input :disabled="complementOptional" id="complement" v-model="form.complement"
+              placeholder="Complemento *" :required="!complementOptional"></b-form-input>
+          </b-form-group>
+          <b-checkbox class="align-self-start" @change="toggleOptional('complement')">
+            <label class="ms-2">Sem complemento</label>
+          </b-checkbox>
+        </div>
+        <b-form-group label-for="referencia">
+          <b-form-textarea rows="3" id="referencia" v-model="form.reference"
+            placeholder="Ponto de referência (opcional)"></b-form-textarea>
         </b-form-group>
       </div>
-
-      <div class="city-container">
-        <b-form-group label-for="state">
-          <b-form-input id="state" v-model="form.state" placeholder="Estado" required></b-form-input>
-        </b-form-group>
-        <b-form-group label-for="city">
-          <b-form-input id="city" v-model="form.city" placeholder="Digite a cidade" required></b-form-input>
-        </b-form-group>
-      </div>
-
-      <b-form-group label-for="district">
-        <b-form-input id="district" v-model="form.district" placeholder="Bairro" required></b-form-input>
-      </b-form-group>
-
-      <b-form-group label-for="complement">
-        <b-form-textarea id="complement" v-model="form.complement" placeholder="Complemento"></b-form-textarea>
-      </b-form-group>
-
-      <b-form-group label-for="referencia">
-        <b-form-textarea id="referencia" v-model="form.referencia" placeholder="Ponto de referência"></b-form-textarea>
-      </b-form-group> -->
-
-      <!-- <b-button type="submit" variant="primary">Enviar</b-button> -->
+      <b-button :disabled="submitDisabled" type="submit" variant="primary" v-if="cepBeValid">Salvar endereço</b-button>
     </b-form>
   </b-container>
 </template>
@@ -68,6 +61,9 @@ export default {
       cepBeValid: null,
       loading: false,
       cepResponseError: '',
+      showFullForm: false,
+      numberOptional: false,
+      complementOptional: false,
       form: {
         cep: '',
         logradouro: '',
@@ -76,7 +72,7 @@ export default {
         city: '',
         district: '',
         complement: '',
-        referencia: ''
+        reference: ''
       }
     };
   },
@@ -106,7 +102,6 @@ export default {
       } finally {
         this.loading = false;
       }
-
     },
     async handleSubmit() {
       try {
@@ -116,14 +111,36 @@ export default {
         console.log('erro ao criar endereço', error)
       }
     },
-    formatterCep(value) {
-      return value.trim().replace(/[a-zA-Z]/g, '')
+    toggleOptional(kind) {
+      this[`${kind}Optional`] = !this[`${kind}Optional`];
+      this.form[kind] = '';
+    },
+  },
+  computed: {
+    submitDisabled() {
+      return (
+        (!this.numberOptional && !this.form.number.trim()) ||
+        (!this.complementOptional && !this.form.complement.trim())
+      );
     }
   }
 };
 </script>
 
-<style scoped>
+<style>
+.form-address-container {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.form-address-complement {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  height: 50%;
+}
+
 .logradouro-container {
   display: flex;
   flex-flow: row;
@@ -133,5 +150,15 @@ export default {
   display: flex;
   flex-flow: row;
 }
-</style>
 
+.container-input {
+  display: flex;
+  flex-direction: column;
+  height: 70px;
+  justify-content: space-between;
+}
+
+.address-card {
+  height: 90px;
+}
+</style>

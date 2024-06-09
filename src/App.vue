@@ -42,4 +42,9 @@ nav a {
   cursor: pointer !important;
   outline: inherit !important;
 }
+
+.custom-control-input {
+  width: 18px;
+  height: 18px;
+}
 </style>
