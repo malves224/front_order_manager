@@ -11,7 +11,7 @@ class Customer extends HttpService {
   }
 
   async createAddress(data) {
-    return this.client.post(`${this.namespace}/address`, data);
+    return this.client.post(`${this.namespace}/addresses`, data);
   }
 }
 
