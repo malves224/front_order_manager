@@ -13,6 +13,14 @@ class Customer extends HttpService {
   async createAddress(data) {
     return this.client.post(`${this.namespace}/addresses`, data);
   }
+
+  async addresses() {
+    return this.client.get(`${this.namespace}/addresses`);
+  }
+
+  async address() {
+    return this.client.get(`${this.namespace}/addresses/last`);
+  }
 }
 
 export default Customer;
