@@ -21,8 +21,7 @@ const routes = [
     path: '/cart',
     component: () => import('../views/CartView'),
     children: [
-      { path: '', component: () => import('../views/ShowItems') },
-      { path: 'confirm', component: () => import('../views/ConfirmOrder') }
+      { path: '', component: () => import('../views/ShowItems') }
     ]
   },
   {
