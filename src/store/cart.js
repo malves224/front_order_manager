@@ -6,17 +6,30 @@ const cartLocalStorage = new LocalStorage('cart');
 export const useCartStore = defineStore('cart', {
   state: () => ({
     cart: [],
+    addressSelected: null,
+    paymentMethod: null,
+    returnShock: null
   }),
   getters: {
     total() {
       return this.cart.reduce((acc, item) => {
         return acc + item.total;
-      }, 0);
+      }, 0) * 100;
+    },
+    totalWithDeliveryFee() {
+      if (this.deliveryFee) {
+        return this.total + this.deliveryFee
+      }
     },
     count() {
       return this.cart.reduce((acc, item) => {
         return acc + item.quantity;
       }, 0);
+    },
+    deliveryFee() {
+      if (this.addressSelected) {
+        return 500
+      }
     }
   },
   actions: {
@@ -60,6 +73,6 @@ export const useCartStore = defineStore('cart', {
     },
     getItem(id) {
       return this.cart.find((item) => item.id === id);
-    }
+    },
   }
 });
