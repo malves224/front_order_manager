@@ -1,13 +1,14 @@
 <template>
   <div class="cart-info" v-if="cartStore.total">
     <div class="cart-value">
-      <p>Total sem taxa entrega</p>
+      <p>{{ cartStore.addressSelected ? 'Total' : 'Total sem taxa entrega' }}</p>
       <div class="value-info">
-        <h6>{{ $formatCurrency(cartStore.total) }}</h6>
-        <p>/ {{ cartStore.count }} item{{ cartStore.total > 1 ? 's' : '' }}</p>
+        <h6>{{ $formatCents(total()) }}</h6>
+        <p>/ {{ cartStore.count }} item{{ cartStore.count > 1 ? 's' : '' }}</p>
       </div>
     </div>
-    <b-button class="ms-3" :to="nextPath" variant="primary">{{ contentButton }}</b-button>
+    <b-button v-if="currentPath === '/cart'" class="button-nav-cart ms-3" variant="primary">Fazer pedido</b-button>
+    <b-button v-else class="button-nav-cart ms-3" :to="'cart'" variant="primary">Ver carrinho</b-button>
   </div>
 </template>
 <script>
@@ -21,6 +22,14 @@ export default {
       currentPath: ''
     }
   },
+  methods: {
+    total() {
+      if (this.cartStore.addressSelected) {
+        return this.cartStore.totalWithDeliveryFee
+      }
+      return this.cartStore.total
+    }
+  },
   mounted() {
     this.cartStore.initializeFromLocalStorage();
     this.currentPath = this.$route.path;
@@ -31,11 +40,8 @@ export default {
   computed: {
     ...mapStores(useCartStore),
     contentButton() {
-      return this.currentPath === '/cart' ? 'Continuar' : 'Ver carrinho';
+      return this.currentPath === '/cart' ? 'Fazer pedido' : 'Ver carrinho';
     },
-    nextPath() {
-      return this.currentPath === '/cart' ? '/cart/confirm' : '/cart';
-    }
   }
 }
 </script>
@@ -74,5 +80,10 @@ export default {
 
 .value-info>h6 {
   margin: 0;
+}
+
+.button-nav-cart {
+  width: 60%;
+  max-width: 60%;
 }
 </style>
