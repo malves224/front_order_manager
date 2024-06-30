@@ -1,4 +1,4 @@
-const formmaterBRL = new Intl.NumberFormat('pt-BR', {
+const formatterBRL = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
     minimumFractionDigits: 2,
@@ -6,5 +6,10 @@ const formmaterBRL = new Intl.NumberFormat('pt-BR', {
 });
 
 export default function formatCurrency(value) {
-    return formmaterBRL.format(value)
+    return formatterBRL.format(value);
+}
+
+export function formatCents(cents) {
+    const money = cents / 100;
+    return formatCurrency(money);
 }
