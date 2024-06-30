@@ -1,5 +1,5 @@
 <template lang="">
-  <div class='mb-3'>
+  <div class='mb-2'>
     <div class="cart-items-container">
       <h3>Itens adicionardos</h3>
       <div class="cart-items w-100">
@@ -7,12 +7,22 @@
         <b-button to="/order" class="mt-2 align-self-center button-none">Adicionar mais itens</b-button>
       </div>
     </div>
+    <ConfirmOrder />
     <div class="resume-cart">
       <h3>Resumo de valores</h3>
       <div class="cart-resume-item">
         <p>Subtotal</p>
-        <p> {{ $formatCurrency(cartStore.total) }} </p>
+        <p> {{ $formatCents(cartStore.total) }} </p>
       </div>
+      <div v-if="cartStore.deliveryFee" class="cart-resume-item">
+        <p>Taxa de entrega</p>
+        <p> {{ $formatCents(cartStore.deliveryFee) }} </p>
+      </div>
+      <div v-if="cartStore.deliveryFee" class="cart-resume-item">
+        <p>Total: </p>
+        <p> {{ $formatCents(cartStore.totalWithDeliveryFee) }} </p>
+      </div>
+
     </div>
 </div>
 
@@ -20,11 +30,13 @@
 <script>
 import { useCartStore } from '@/store/cart';
 import { mapStores } from 'pinia';
-import ItemCard from '@/components/cart/ItemCart.vue'
+import ItemCard from '@/components/cart/ItemCart.vue';
+import ConfirmOrder from '../components/ConfirmOrder.vue';
 
 export default {
   components: {
-    ItemCard
+    ItemCard,
+    ConfirmOrder
   },
   computed: {
     ...mapStores(useCartStore)
@@ -56,13 +68,14 @@ export default {
   flex-flow: column;
   overflow-y: scroll;
   justify-content: space-between;
+  max-height: 40vh;
 }
 
 .resume-cart {
   display: flex;
   flex-flow: column;
   align-items: flex-start;
-  margin-top: 25px;
+  margin-top: 10px;
 }
 
 .cart-resume-item {
