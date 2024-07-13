@@ -7,8 +7,9 @@
         <p>/ {{ cartStore.count }} item{{ cartStore.count > 1 ? 's' : '' }}</p>
       </div>
     </div>
-    <b-button v-if="currentPath === '/cart'" class="button-nav-cart ms-3" variant="primary">Fazer pedido</b-button>
+    <b-button v-if="currentPath === '/cart'" @click="cartStore.doOrder" class="button-nav-cart ms-3" variant="primary">Fazer pedido</b-button>
     <b-button v-else class="button-nav-cart ms-3" :to="'cart'" variant="primary">Ver carrinho</b-button>
+    <b-alert :show="showRequiredAdress && !this.cartStore.addressSelected" variant="danger">Por favor insira seu endereço de entrega.</b-alert>
   </div>
 </template>
 <script>
@@ -19,7 +20,8 @@ export default {
   data() {
     return {
       hasCart: true,
-      currentPath: ''
+      currentPath: '',
+      showRequiredAdress: false,
     }
   },
   methods: {
@@ -28,7 +30,7 @@ export default {
         return this.cartStore.totalWithDeliveryFee
       }
       return this.cartStore.total
-    }
+    },
   },
   mounted() {
     this.cartStore.initializeFromLocalStorage();

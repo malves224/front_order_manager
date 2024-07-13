@@ -15,28 +15,48 @@
           <b-icon :icon="iconPaymentMethod()"></b-icon>
           {{contentPaymentMethod()}}
         </b-button>
-        <div class="return-shock-container" v-if="cartStore.paymentMethod === 'cash'">
-          <div class="form-return-shock">
-            <span>Valor para troco:</span>
-            <b-form-group label-for="returnShock">
-              <b-form-input 
-                type="returnShock"
-                :disabled="returnShock.optional" 
-                id="returnShock" 
-                v-model="cartStore.returnShock" 
-                :required="!returnShock.optional"
-                v-money="money"
-                ></b-form-input>
-              </b-form-group>
-          </div>
-          <b-form-checkbox id="shouldReturnShock" class="align-self-start" v-model="returnShock.optional">
-            <label id="shouldReturnShock" class="ms-2">Não preciso de troco.</label>
-          </b-form-checkbox>
-        </div>
         <van-action-sheet style="height: 80vh" v-model="showFormAddress" title="Adicionar um endereço">
-          <AddressForm />
+          <b-alert
+            :show="countAlert"
+            variant="danger"
+          >
+            Por favor insira seu endereço.
+        </b-alert>
+          <AddressForm @created="addressCreated" />
         </van-action-sheet>
         <van-action-sheet @select="paymentSelect" :actions="optionsMethodPayment" v-model="showPaymentMethod" title="Forma de pagamento">
+          <b-alert
+          :show="countAlert"
+          variant="danger"
+        >
+          Por favor selecione forma de pagamento.
+        </b-alert>
+        </van-action-sheet>
+        <van-action-sheet style="height: 27vh" title="Precisa de troco?" v-model="cartStore.renderReturnShock">
+          <div class="return-shock-container">
+            <div v-if="isZeroError" class="text-danger">Troco não pode ser zero</div>
+              <b-input-group>
+                <b-form-input 
+                  :disabled="!returnShock" 
+                  id="returnShock" 
+                  v-model="cartStore.returnShock" 
+                  :required="!returnShock.optional"
+                  v-money="money"
+                  ></b-form-input>
+                <b-input-group-append>
+                  <b-button 
+                    class="ms-3"
+                    :disabled="!money" 
+                    variant="primary"
+                    @click="doOrderWithSock()"
+                  >Fazer pedido</b-button>
+                </b-input-group-append>
+              </b-input-group>
+            <b-button @click="doOrderWithoutSock" variant="primary" >
+              Não preciso de troco
+            </b-button>
+          </div>
+  
         </van-action-sheet>
     </div>
 </template>
@@ -69,6 +89,8 @@ export default {
       showFormAddress: false,
       showPaymentMethod: false,
       customerService: new Customer(),
+      countAlert: 0,
+      isZeroError: false
     }
   },
   methods: {
@@ -76,9 +98,22 @@ export default {
       this.cartStore.addressSelected = address;
       this.showFormAddress = false;
     },
+    validateZero() {
+      const value = this.cartStore.returnShock.replace(/[^0-9,.-]+/g, '').replace(',', '.');
+      const numericValue = parseFloat(value);
+      if (numericValue === 0 || isNaN(numericValue)) {
+        return this.isZeroError = true;
+
+      } else {
+        return this.isZeroError = false;
+      }
+    },
     paymentSelect(item) {
       this.cartStore.paymentMethod = item.key;
       this.showPaymentMethod = false;
+      if (this.cartStore.paymentMethod == 'cash') {
+        this.cartStore.renderReturnShock = true
+      }
     },
     iconPaymentMethod() {
       switch (this.cartStore.paymentMethod) {
@@ -91,6 +126,14 @@ export default {
         default:
           return 'currency-dollar'
       }
+    },
+    doOrderWithoutSock() {
+      this.cartStore.returnShock = 0;
+      this.cartStore.doOrder();
+    },
+    doOrderWithSock() {
+      if (this.validateZero()) return
+      this.cartStore.doOrder();
     },
     contentPaymentMethod() {
       switch (this.cartStore.paymentMethod) {
@@ -106,12 +149,41 @@ export default {
     },
   },
   computed: {
-    ...mapStores(useCartStore),
+    ...mapStores(useCartStore)
   },
   watch: {
     'returnShock.optional'(value) {
       if (value) {
         this.cartStore.returnShock = null;
+      }
+    },
+    showFormAddress(value) {
+      if (!value) {
+        this.cartStore.renderAddressRequired = value;
+      }
+    },
+    showPaymentMethod(value) {
+      if (!value) {
+        this.cartStore.renderPaymentRequired = value;
+      }
+    },
+    'cartStore.renderAddressRequired'(value) {
+      if (value) {
+        this.showFormAddress = value;
+        this.countAlert = 5;
+      }
+    },
+    'cartStore.renderPaymentRequired'(value) {
+      if (value) {
+        this.showPaymentMethod = value;
+        this.countAlert = 5;
+      }
+    },
+    countAlert(value, current) {
+      if (value > current) {
+        setTimeout(() => {
+          this.countAlert -= 1
+        }, 1000)
       }
     }
   }
@@ -154,7 +226,8 @@ export default {
   display: flex;
   flex-flow: column;
   justify-content: space-around;
-  height: 85px;
+  height: 100%;
+  padding: 10px;
 }
 
 .form-return-shock {
