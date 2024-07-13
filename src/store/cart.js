@@ -1,5 +1,8 @@
 import { defineStore } from 'pinia';
 import LocalStorage from '@/services/localStorage/localStorage';
+import Customer from '@/services/customerService';
+import Swal from 'sweetalert2';
+import router from '@/router';
 
 const cartLocalStorage = new LocalStorage('cart');
 
@@ -8,7 +11,11 @@ export const useCartStore = defineStore('cart', {
     cart: [],
     addressSelected: null,
     paymentMethod: null,
-    returnShock: null
+    returnShock: null,
+    renderAddressRequired: false,
+    renderPaymentRequired: false,
+    renderReturnShock: false,
+    customerService: new Customer()
   }),
   getters: {
     total() {
@@ -74,5 +81,37 @@ export const useCartStore = defineStore('cart', {
     getItem(id) {
       return this.cart.find((item) => item.id === id);
     },
+    async doOrder() {
+      if (!this.addressSelected) {
+        this.renderAddressRequired = true;
+        return
+      }
+
+      if (!this.paymentMethod) {
+        this.renderPaymentRequired = true;
+        return
+      }
+
+      const payload = {
+        customer_id: new LocalStorage('customer').get().id,
+        address_id: this.addressSelected.id,
+        return_shock: this.paymentMethod == 'cash' && this.returnShock,
+        payment_method: this.paymentMethod,
+        products: this.cart.map(({ id, quantity, observation }) => ({ id, quantity, observation }))
+      }
+      await this.customerService.doOrder(payload);
+      this.clear();
+      router.push("/");
+      Swal.fire({
+        title: "Pedido realizado!",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Acompanhar meu pedido!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push("/list");
+        }
+      });
+    }
   }
 });

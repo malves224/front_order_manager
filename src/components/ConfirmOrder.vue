@@ -129,10 +129,12 @@ export default {
     },
     doOrderWithoutSock() {
       this.cartStore.returnShock = 0;
+      this.showPaymentMethod = false;
       this.cartStore.doOrder();
     },
     doOrderWithSock() {
       if (this.validateZero()) return
+      this.showPaymentMethod = false;
       this.cartStore.doOrder();
     },
     contentPaymentMethod() {

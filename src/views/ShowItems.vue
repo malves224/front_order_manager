@@ -1,5 +1,5 @@
 <template lang="">
-  <div class='mb-2'>
+  <div class='mb-5'>
     <div class="cart-items-container">
       <h3>Itens adicionardos</h3>
       <div class="cart-items w-100">
