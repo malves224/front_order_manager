@@ -95,9 +95,9 @@ export const useCartStore = defineStore('cart', {
       const payload = {
         customer_id: new LocalStorage('customer').get().id,
         address_id: this.addressSelected.id,
-        return_shock: this.paymentMethod == 'cash' && this.returnShock,
+        return_shock: this.paymentMethod == 'cash' ? this.returnShock : null,
         payment_method: this.paymentMethod,
-        products: this.cart.map(({ id, quantity, observation }) => ({ id, quantity, observation }))
+        products: this.cart.map(({ id, quantity, observation }) => ({ product_id: id, quantity, observation }))
       }
       await this.customerService.doOrder(payload);
       this.clear();
