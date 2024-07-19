@@ -2,38 +2,42 @@
   <div>
     <div> top menu</div>
     <div class="order-list">
-      <div class="order-item">
-        <div class="order-item-header">
-          <div class="order-item-text">
-            <h4>Pedido #1</h4>
-            <p>Em 13/04/2020 às 10:00</p>
+      <div>
+        <div v-for="order in orders" :key="order.id" class="order-item">
+          <div class="order-item-header">
+            <div class="order-item-text">
+              <h4>Pedido #1</h4>
+              <p>Em {{ formatDate(order.created_at, 'dd/MM/yyyy') }} às {{ formatDate(order.created_at, 'HH:mm') }}</p>
+            </div>
+            <b-button class="h-75" size="sm" :variant="variantStatus('pending')">Pendente</b-button>
           </div>
-          <b-button class="h-75" size="sm" :variant="variantStatus('pending')">Pendente</b-button>
-        </div>
-        <div class="order-item-body">
-          <div class="order-item-body-item">
-            <p class="me-2">{{ 1 }}x</p>
-            <p>{{ 'salsicha' }}</p>
-          </div>
-          <div class="order-item-body-item">
-            <p class="me-2">{{ 2 }}x</p>
-            <p>{{ 'cerveja' }}</p>
-          </div>
+          <div class="order-item-body">
+            <div v-for="item in order.orders_product" :key="item.id" class="order-item-body-item">
+              <p class="me-2">{{ item.quantity }}x</p>
+              <p>{{ item.product.name }}</p>
+            </div>
 
+          </div>
+          <div class="order-item-price">
+            <h4 class="mt-2 ta-c">Total: {{ $formatCents(order.total) }}</h4>
+          </div>
+          <b-button :to="`/order/detail/${order.id}`" class="w-100" variant="outline-primary">
+            {{ order.status === 'finished' ? 'Detalhes do pedido' : 'Acompanhar pedido' }}
+          </b-button>
         </div>
-        <div class="order-item-price">
-          <h4 class="mt-2 ta-c">Total: R$ 12,00</h4>
-        </div>
-        <b-button variant="outline-primary">
-          Detalhes do pedido
-        </b-button>
+      </div>
+      <div class=" bar-separator">
       </div>
     </div>
   </div>
 </template>
 <script>
 export default {
-
+  data() {
+    return {
+      orders: [],
+    }
+  },
   methods: {
     variantStatus(status) {
       if (status === 'pending') {
@@ -48,8 +52,15 @@ export default {
         return 'outline-danger'
       }
       return 'info'
+    },
+    async getOrders() {
+      const response = await this.$customerService.orders();
+      this.orders = response.data;
     }
-  }
+  },
+  mounted() {
+    this.getOrders()
+  },
 }
 </script>
 <style>
@@ -58,16 +69,18 @@ export default {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  margin-bottom: 140px;
 }
 
 .order-item {
   width: 100%;
+  height: 230px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
+  padding: 20px;
   border-bottom: 1px solid var(--bs-gray-300);
 }
 
@@ -106,5 +119,11 @@ export default {
   display: flex;
   justify-content: flex-start;
   width: 100%;
+}
+
+.bar-separator {
+  width: 100%;
+  height: 1px;
+  background-color: var(--bs-gray-300);
 }
 </style>
