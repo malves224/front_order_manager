@@ -6,6 +6,9 @@ import { formatCents } from './mixins/currencyFormatter'
 import { createPinia, PiniaVuePlugin } from 'pinia'
 import { ActionSheet, Loading } from 'vant';
 import { VMoney } from 'v-money';
+import CustomerService from './services/customerService'
+import dateMixin from '@/mixins/dateMixin';
+
 
 
 Vue.config.productionTip = false
@@ -16,6 +19,8 @@ import router from './router'
 
 Vue.prototype.$formatCurrency = formatCurrency
 Vue.prototype.$formatCents = formatCents
+Vue.prototype.$customerService = new CustomerService()
+Vue.mixin(dateMixin);
 Vue.use(PiniaVuePlugin)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
