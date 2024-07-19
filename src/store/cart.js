@@ -76,6 +76,8 @@ export const useCartStore = defineStore('cart', {
     },
     clear() {
       this.cart = [];
+      this.paymentMethod = null;
+      this.returnShock = null;
       this.updateCart();
     },
     getItem(id) {
@@ -109,7 +111,7 @@ export const useCartStore = defineStore('cart', {
         confirmButtonText: "Acompanhar meu pedido!",
       }).then((result) => {
         if (result.isConfirmed) {
-          router.push("/list");
+          router.push("/order/list");
         }
       });
     }
