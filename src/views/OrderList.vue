@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div> top menu</div>
     <div class="order-list">
+      <ReturnMenu></ReturnMenu>
       <div>
         <div v-for="order in orders" :key="order.id" class="order-item">
           <div class="order-item-header">
@@ -32,7 +32,12 @@
   </div>
 </template>
 <script>
+import ReturnMenu from '@/components/ReturnMenu.vue'
+
 export default {
+  components: {
+    ReturnMenu
+  },
   data() {
     return {
       orders: [],
@@ -66,6 +71,7 @@ export default {
 <style>
 .order-list {
   width: 100%;
+  padding: 10px;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -80,7 +86,7 @@ export default {
   flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
-  padding: 20px;
+  padding: 10px;
   border-bottom: 1px solid var(--bs-gray-300);
 }
 

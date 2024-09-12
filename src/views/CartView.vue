@@ -1,6 +1,6 @@
 <template >
   <div class="cart-view">
-    <ActionCart></ActionCart>
+    <ReturnMenu></ReturnMenu>
     <div class="mt-2 info-client-container">
       <b-img src="https://assets.turbologo.com/blog/pt/2019/07/19133836/mcdonalds-golden-arches-logo-1961.jpg" />
       <div class="info-client-title">
@@ -16,12 +16,12 @@
 </template>
 <script>
 import NavCart from '@/components/cart/NavCart.vue'
-import ActionCart from '@/components/cart/ActionCart.vue'
+import ReturnMenu from '@/components/ReturnMenu.vue'
 
 export default {
   components: {
     NavCart,
-    ActionCart
+    ReturnMenu
   }
 }
 </script>
