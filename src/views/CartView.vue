@@ -1,16 +1,18 @@
-<template >
-  <div class="cart-view">
+<template>
+  <div>
     <ReturnMenu></ReturnMenu>
-    <div class="mt-2 info-client-container">
-      <b-img src="https://assets.turbologo.com/blog/pt/2019/07/19133836/mcdonalds-golden-arches-logo-1961.jpg" />
-      <div class="info-client-title">
-        <h3 class="mb-0">Mc donalds</h3>
-        <b-button to="/order" class="button-none">Adicionar mais itens</b-button>
+    <div class="cart-view">
+      <div class="info-client-container">
+        <b-img src="https://assets.turbologo.com/blog/pt/2019/07/19133836/mcdonalds-golden-arches-logo-1961.jpg" />
+        <div class="info-client-title">
+          <h3 class="mb-0">Mc donalds</h3>
+          <b-button to="/order" class="button-none">Adicionar mais itens</b-button>
+        </div>
       </div>
-    </div>
-    <router-view></router-view>
-    <div class="position-nav-cart">
-      <NavCart></NavCart>
+      <router-view></router-view>
+      <div class="position-nav-cart">
+        <NavCart></NavCart>
+      </div>
     </div>
   </div>
 </template>
@@ -50,7 +52,7 @@ export default {
 }
 
 .cart-view {
-  padding: 10px;
+  padding: 0 10px;
 }
 
 .position-nav-cart {
