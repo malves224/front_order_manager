@@ -28,7 +28,10 @@ class Customer extends HttpService {
 
   async doOrder(order) {
     return this.client.post(`${this.namespace}/order`, order);
+  }
 
+  async order(id) {
+    return this.client.get(`${this.namespace}/order/${id}`);
   }
 }
 
