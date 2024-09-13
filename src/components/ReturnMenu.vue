@@ -1,10 +1,10 @@
 <template>
   <div class="action-cart">
-    <div class="back-button-container h2">
+    <div class="back-button-container h3">
       <b-button class="button-none" @click="back">
         <b-icon icon="caret-left-fill"></b-icon>
       </b-button>
-      <h1>{{ mapContent[currentPath] }}</h1>
+      <h3>{{ contentPage }}</h3>
     </div>
     <div v-if="currentPath === '/cart'" class="h2">
       <b-button @click="doTrash" class="button-none">
@@ -22,7 +22,14 @@ export default {
     ...mapStores(useCartStore),
     currentPage() {
       return this.cartStore.currentPage
-    }
+    },
+    contentPage() {
+      if (this.currentPath.includes('/order/detail')) {
+        return 'Meu pedido'
+      } else {
+        return this.mapContent[this.currentPath]
+      }
+    },
   },
   data() {
     return {
@@ -30,7 +37,6 @@ export default {
       mapContent: {
         '/cart': 'Carrinho',
         '/order/list': 'Pedidos',
-        'order/detail': 'Detalhes do pedido',
       }
     }
   },
@@ -78,6 +84,9 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 65%;
+  width: 60%;
+}
+.back-button-container > h3 {
+  margin: 0;
 }
 </style>
