@@ -79,6 +79,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: 10px 10px 0 10px;
+  border-bottom: 1px solid var(--bs-gray-300);
 }
 .back-button-container {
   display: flex;
