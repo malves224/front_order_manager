@@ -14,7 +14,8 @@ const routes = [
     component: () => import('../views/OrderView'),
     children: [
       { path: '', component: () => import('../views/OrderBalcony') },
-      { path: 'list', component: () => import('../views/OrderList') }
+      { path: 'list', component: () => import('../views/OrderList') },
+      { path: 'detail/:id', component: () => import('../views/OrderProgress') },
     ]
   },
   {

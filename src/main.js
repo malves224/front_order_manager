@@ -4,7 +4,7 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import formatCurrency from './mixins/currencyFormatter'
 import { formatCents } from './mixins/currencyFormatter'
 import { createPinia, PiniaVuePlugin } from 'pinia'
-import { ActionSheet, Loading } from 'vant';
+import { ActionSheet, Loading, Step, Steps } from 'vant';
 import { VMoney } from 'v-money';
 import CustomerService from './services/customerService'
 import dateMixin from '@/mixins/dateMixin';
@@ -26,6 +26,8 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(ActionSheet)
 Vue.use(Loading)
+Vue.use(Step)
+Vue.use(Steps)
 
 Vue.directive('money', VMoney);
 
