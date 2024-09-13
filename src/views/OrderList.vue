@@ -5,19 +5,12 @@
       <div>
         <div class="bar-separator">
           <div v-for="order in orders" :key="order.id" class="order-item">
-            <div class="order-item-header">
-              <div class="order-item-text">
-                <h4>Pedido #1</h4>
-                <p>Em {{ formatDate(order.created_at, 'dd/MM/yyyy') }} às {{ formatDate(order.created_at, 'HH:mm') }}</p>
-              </div>
-              <b-button class="h-75" size="sm" :variant="variantStatus('pending')">Pendente</b-button>
-            </div>
+            <OrderHeader :order="order"></OrderHeader>
             <div class="order-item-body">
               <div v-for="item in order.orders_product" :key="item.id" class="order-item-body-item">
                 <p class="me-2">{{ item.quantity }}x</p>
                 <p>{{ item.product.name }}</p>
               </div>
-
             </div>
             <div class="order-item-price">
               <h4 class="mt-2 ta-c">Total: {{ $formatCents(order.total) }}</h4>
@@ -33,10 +26,12 @@
 </template>
 <script>
 import ReturnMenu from '@/components/ReturnMenu.vue'
+import OrderHeader from '@/components/OrderHeader.vue'
 
 export default {
   components: {
-    ReturnMenu
+    ReturnMenu,
+    OrderHeader
   },
   data() {
     return {
