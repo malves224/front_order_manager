@@ -81,7 +81,6 @@ export default {
   align-items: center;
   margin-bottom: 20px;
   padding: 10px;
-  border-bottom: 1px solid var(--bs-gray-300);
 }
 
 .order-item-header {
@@ -105,7 +104,6 @@ export default {
   justify-content: space-between;
   flex-direction: column;
   width: 100%;
-  border: 1px solid var(--bs-gray-300);
 }
 
 .order-item-body-item {
@@ -113,6 +111,7 @@ export default {
   align-items: center;
   width: 100%;
   padding: 10px;
+  border: 1px solid var(--bs-gray-300);
 }
 
 .order-item-price {
@@ -123,7 +122,6 @@ export default {
 
 .bar-separator {
   width: 100%;
-  height: 1px;
-  background-color: var(--bs-gray-300);
+  border-bottom: 1px solid var(--bs-gray-300);
 }
 </style>
