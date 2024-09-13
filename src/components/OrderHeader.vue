@@ -1,10 +1,10 @@
 <template>
   <div class="order-item-header">
     <div class="order-item-text">
-      <strong class="h2" >Pedido #1</strong>
+      <strong class="h2">Pedido #1</strong>
       <p>Em {{ formatDate(order.created_at, 'dd/MM/yyyy') }} às {{ formatDate(order.created_at, 'HH:mm') }}</p>
     </div>
-    <b-button class="h-75" size="sm" :variant="variantStatus('pending')">Pendente</b-button>
+    <b-button class="h-75" size="sm" :variant="variantStatus('pending')">{{order.status}}</b-button>
   </div>
 </template>
 <script>
@@ -38,6 +38,7 @@ export default {
   display: flex;
   justify-content: space-between;
   width: 100%;
+  align-items: center;
 }
 
 .order-item-text {
