@@ -1160,6 +1160,11 @@
   "resolved" "https://registry.npmjs.org/@popperjs/core/-/core-2.11.8.tgz"
   "version" "2.11.8"
 
+"@rails/actioncable@^7.2.100":
+  "integrity" "sha512-7xtIENf0Yw59AFDM3+xqxPCZxev3QVAqjPmUzmgsB9eL8S/zTpB0IU9srNc7XknzJI4e09XKNnCaJRx3gfYzXA=="
+  "resolved" "https://registry.npmjs.org/@rails/actioncable/-/actioncable-7.2.100.tgz"
+  "version" "7.2.100"
+
 "@sideway/address@^4.1.5":
   "integrity" "sha512-IqO/DUQHUkPeixNQ8n0JA6102hT9CmaljNTPmQ1u8MEhBo/R4Q8eKLN/vGZxuebwOroDB4cbpjheD4+/sKFK4Q=="
   "resolved" "https://registry.npmjs.org/@sideway/address/-/address-4.1.5.tgz"
