@@ -1,9 +1,13 @@
 import HttpService from "./http";
+import { createConsumer } from "@rails/actioncable"
+
 
 class Customer extends HttpService {
   constructor() {
     super();
     this.namespace = "customer";
+    this.cableUrl = process.env.VUE_APP_API_URL || '192.168.15.25:3000'
+    this.cable = createConsumer(`ws://${this.cableUrl}/cable?token=${this.storage.get().token}`)
   }
 
   async login({ name, phone }) {
@@ -32,6 +36,23 @@ class Customer extends HttpService {
 
   async order(id) {
     return this.client.get(`${this.namespace}/order/${id}`);
+  }
+
+  followOrder(id) {
+    this.cable.subscriptions.create(
+      { channel: "OrderChannel", order_id: id },
+      {
+        connected() {
+          console.log("Conectado com sucesso");
+        },
+        disconnected() {
+          console.log("Desconectado");
+        },
+        received(data) {
+          console.log("Dados recebidos:", data);
+        }
+      }
+    );
   }
 }
 

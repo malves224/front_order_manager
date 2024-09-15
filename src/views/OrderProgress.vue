@@ -64,7 +64,6 @@ export default {
   },
   computed: {
     paymentMethod() {
-      console.log(this.order)
       switch (this.order.payment_method) {
         case 'card':
           return 'Cartão de credito/debito'
@@ -84,6 +83,7 @@ export default {
   },
   async beforeMount() {
     await this.getOrder();
+    this.$customerService.followOrder(this.$route.params.id);
   },
   methods: {
     async getOrder() {
