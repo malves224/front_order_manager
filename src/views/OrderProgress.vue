@@ -3,9 +3,9 @@
     <ReturnMenu />
     <div v-if="order" class="order-progress-container">
       <OrderHeader :order="order" />
-      <van-steps class="steps-container" direction="vertical" :active="steps.length -1">
+      <van-steps class="steps-container" direction="vertical" :active="steps.length - 1">
         <van-step v-for="step in steps" :key="step.title">
-          <p>{{  formatDate(step.date, 'HH:mm') }} - {{ step.title }}</p>
+          <p>{{ formatDate(step.date, 'HH:mm') }} - {{ step.title }}</p>
         </van-step>
       </van-steps>
       <div class="progress-address-container">
@@ -78,40 +78,63 @@ export default {
   },
   async beforeMount() {
     await this.getOrder();
-    this.$customerService.followOrder(this.$route.params.id);
+    this.$customerService.followOrder(this.$route.params.id, (data) => {
+      data = JSON.parse(data);
+      if (data.type === 'order_status_update') {
+        this.order.status = data.status;
+        this.order[data.status + '_at'] = data.at;
+        this.steps.push({
+          title: this.contentStatus(data.status),
+          date: data.at
+        })
+      }
+    });
   },
   methods: {
+    contentStatus(status) {
+      if (status === 'received') {
+        return 'Pedido recebido'
+      } else if (status === 'preparing') {
+        return 'Pedido em preparo'
+      } else if (status === 'finished') {
+        return 'Entrega realizada'
+      } else if (status === 'ongoing') {
+        return 'Saiu para entrega'
+      } else if (status === 'canceled') {
+        return 'Cancelado'
+      }
+    },
     async getOrder() {
       const response = await this.$customerService.order(this.$route.params.id);
 
       this.order = response.data;
-      if(this.order.received_at) {
+      if (this.order.received_at) {
         this.steps.push({
-          title: 'Pedido recebido',
+          title: this.contentStatus('received'),
           date: this.order.received_at
         })
       }
-      if(this.order.preparing_at) {
+      if (this.order.preparing_at) {
         this.steps.push({
-          title: 'Pedido em preparo',
+          title: this.contentStatus('preparing'),
           date: this.order.preparing_at
         })
       }
-      if(this.order.ongoing_at) {
+      if (this.order.ongoing_at) {
         this.steps.push({
-          title: 'Saiu para entrega',
+          title: this.contentStatus('ongoing'),
           date: this.order.ongoing_at
         })
       }
-      if(this.order.delivered_at) {
+      if (this.order.finished_at) {
         this.steps.push({
-          title: 'Entrega realizada',
+          title: this.contentStatus('finished'),
           date: this.order.delivered_at
         })
       }
-      if(this.order.canecled_at) {
+      if (this.order.canecled_at) {
         this.steps.push({
-          title: 'Pedido cancelado',
+          title: this.contentStatus('canceled'),
           date: this.order.canecled_at
         })
       }

@@ -38,18 +38,18 @@ class Customer extends HttpService {
     return this.client.get(`${this.namespace}/order/${id}`);
   }
 
-  followOrder(id) {
+  followOrder(id, handleReceived, handleDisconnected = () => {}, handleConnected = () => {}) {
     this.cable.subscriptions.create(
       { channel: "OrderChannel", order_id: id },
       {
         connected() {
-          console.log("Conectado com sucesso");
+          handleConnected()
         },
         disconnected() {
-          console.log("Desconectado");
+          handleDisconnected()
         },
         received(data) {
-          console.log("Dados recebidos:", data);
+          handleReceived(data)
         }
       }
     );
