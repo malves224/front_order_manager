@@ -3,15 +3,9 @@
     <ReturnMenu />
     <div v-if="order" class="order-progress-container">
       <OrderHeader :order="order" />
-      <van-steps class="steps-container" direction="vertical" :active="2">
-        <van-step>
-          <p>12:30 - Pedido recebido</p>
-        </van-step>
-        <van-step>
-          <p>12:30 - Pedido em preparo</p>
-        </van-step>
-        <van-step>
-          <p>12:35 - Saiu para entrega</p>
+      <van-steps class="steps-container" direction="vertical" :active="steps.length -1">
+        <van-step v-for="step in steps" :key="step.title">
+          <p>{{  formatDate(step.date, 'HH:mm') }} - {{ step.title }}</p>
         </van-step>
       </van-steps>
       <div class="progress-address-container">
@@ -78,7 +72,8 @@ export default {
   },
   data() {
     return {
-      order: null
+      order: null,
+      steps: []
     }
   },
   async beforeMount() {
@@ -88,7 +83,38 @@ export default {
   methods: {
     async getOrder() {
       const response = await this.$customerService.order(this.$route.params.id);
+
       this.order = response.data;
+      if(this.order.received_at) {
+        this.steps.push({
+          title: 'Pedido recebido',
+          date: this.order.received_at
+        })
+      }
+      if(this.order.preparing_at) {
+        this.steps.push({
+          title: 'Pedido em preparo',
+          date: this.order.preparing_at
+        })
+      }
+      if(this.order.ongoing_at) {
+        this.steps.push({
+          title: 'Saiu para entrega',
+          date: this.order.ongoing_at
+        })
+      }
+      if(this.order.delivered_at) {
+        this.steps.push({
+          title: 'Entrega realizada',
+          date: this.order.delivered_at
+        })
+      }
+      if(this.order.canecled_at) {
+        this.steps.push({
+          title: 'Pedido cancelado',
+          date: this.order.canecled_at
+        })
+      }
     },
     iconPaymentMethod() {
       switch (this.order.payment_method) {
@@ -141,6 +167,13 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  width: 100%;
+}
+
+.cart-resume-item {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
   width: 100%;
 }
 </style>

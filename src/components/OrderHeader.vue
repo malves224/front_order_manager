@@ -4,7 +4,7 @@
       <strong class="h2">Pedido #1</strong>
       <p>Em {{ formatDate(order.created_at, 'dd/MM/yyyy') }} às {{ formatDate(order.created_at, 'HH:mm') }}</p>
     </div>
-    <b-button class="h-75" size="sm" :variant="variantStatus('pending')">{{order.status}}</b-button>
+    <b-button class="h-75" size="sm" :variant="variantStatus('pending')">{{contentStatus(order.status)}}</b-button>
   </div>
 </template>
 <script>
@@ -29,6 +29,19 @@ export default {
         return 'outline-danger'
       }
       return 'info'
+    },
+    contentStatus(status) {
+      if (status === 'received') {
+        return 'Pedido recebido'
+      } else if (status === 'preparing') {
+        return 'Em preparação'
+      } else if (status === 'finished') {
+        return 'Finalizado'
+      } else if (status === 'ongoing') {
+        return 'Em entrega'
+      } else if (status === 'canceled') {
+        return 'Cancelado'
+      }
     },
   }
 }
