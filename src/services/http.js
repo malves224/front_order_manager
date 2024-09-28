@@ -2,10 +2,11 @@ import axios from 'axios';
 import LocalStorage from './localStorage/localStorage';
 
 class HttpService {
-  constructor(url = undefined) {
+  constructor() {
     this.storage = new LocalStorage('customer')
+    this.subdomain = window.location.hostname.split('.')[0];
     this.client = axios.create({
-      baseURL: url ? url : process.env.VUE_APP_API_URL || 'http://192.168.15.25:3000/'
+      baseURL: process.env.VUE_APP_API_URL ? `${this.subdomain}.${process.env.VUE_APP_API_URL}` : `http://${this.subdomain}.localhost:3000/`,
     });
 
     this.client.interceptors.request.use(
