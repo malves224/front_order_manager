@@ -4,12 +4,12 @@
     <div class="title-tenant">
       <h1 style="margin: 0" class="card-title">{{ tenantStore.tenant.name }}</h1>
       <span style="color: gray">{{ tenantStore.tenant.description }}</span>
-      <span style="color: gray">Min {{ $formatCents(tenantStore.tenant.config.minimumOrder) }}</span>
+      <span v-if="tenantStore.tenant.config?.minimumOrder" style="color: gray">Pedido Min {{ $formatCents(tenantStore.tenant.config.minimumOrder) }}</span>
     </div>
 
     <div class="info-items">
-      <strong> Taxa de entrega</strong>
-      <span>{{ $formatCents(tenantStore.tenant.config.deliveryFee) }}</span>
+      <strong v-if="tenantStore.tenant.config?.deliveryFee"> Taxa de entrega</strong>
+      <span v-if="tenantStore.tenant.config?.deliveryFee">{{ $formatCents(tenantStore.tenant.config?.deliveryFee) }}</span>
     </div>
   </div>
 </template>
@@ -25,9 +25,13 @@ export default {
 </script>
 <style>
 .info-detail-container {
+  max-height: 210px;
   padding: 8px 15px;
-  width: 80%;
+  width: 90%;
   border-radius: 30px;
+  z-index: 999;
+  position: relative;
+  top: 130px;
 }
 
 .title-tenant {
@@ -37,6 +41,8 @@ export default {
   border-bottom: 1px solid var(--bs-gray-200);
   margin-bottom: 10px;
   padding-bottom: 10px;
+  position: relative;
+  bottom: 35px;
 }
 
 .img-tenant {
@@ -45,12 +51,16 @@ export default {
   border-radius: 50%;
   border: 1px solid var(--bs-gray-200);
   align-self: center;
+  position: relative;
+  bottom: 35px
 }
 
 .info-items {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  position: relative;
+  bottom: 35px;
 }
 
 .info-item {
