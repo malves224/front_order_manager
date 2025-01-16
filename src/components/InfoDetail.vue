@@ -6,11 +6,6 @@
       <span style="color: gray">{{ tenantStore.tenant.description }}</span>
       <span v-if="tenantStore.tenant.config?.minimumOrder" style="color: gray">Pedido Min {{ $formatCents(tenantStore.tenant.config.minimumOrder) }}</span>
     </div>
-
-    <div class="info-items">
-      <strong v-if="tenantStore.tenant.config?.deliveryFee"> Taxa de entrega</strong>
-      <span v-if="tenantStore.tenant.config?.deliveryFee">{{ $formatCents(tenantStore.tenant.config?.deliveryFee) }}</span>
-    </div>
   </div>
 </template>
 <script>
@@ -25,29 +20,28 @@ export default {
 </script>
 <style>
 .info-detail-container {
-  max-height: 210px;
+  max-height: 140px;
   padding: 8px 15px;
   width: 90%;
   border-radius: 30px;
   z-index: 999;
   position: relative;
-  top: 130px;
+  top: 135px;
 }
 
 .title-tenant {
   display: flex;
   flex-flow: column;
   align-items: flex-start;
-  border-bottom: 1px solid var(--bs-gray-200);
   margin-bottom: 10px;
   padding-bottom: 10px;
   position: relative;
-  bottom: 35px;
+  bottom: 25px;
 }
 
 .img-tenant {
-  height: 70px;
-  width: 80px;
+  height: 50px;
+  width: 70px;
   border-radius: 50%;
   border: 1px solid var(--bs-gray-200);
   align-self: center;

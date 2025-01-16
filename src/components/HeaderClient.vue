@@ -20,14 +20,14 @@ export default {
 </script>
 <style>
 .container-info-detail {
-  height: 165px;
+  height: 140px;
   background-size: cover;
   background-position: center;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  margin-bottom: 155px;
+  margin-bottom: 140px;
 }
 
 .container-info-detail::after {
