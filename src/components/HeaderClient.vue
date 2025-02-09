@@ -20,7 +20,7 @@ export default {
 </script>
 <style>
 .container-info-detail {
-  height: 140px;
+  height: 165px;
   background-size: cover;
   background-position: center;
   display: flex;

@@ -37,6 +37,7 @@ export default {
   padding-bottom: 10px;
   position: relative;
   bottom: 25px;
+  max-height: 61px;
 }
 
 .img-tenant {
