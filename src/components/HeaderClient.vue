@@ -1,22 +1,50 @@
 <template>
-  <div>
-    <b-img class="img-hero"
-      src="https://assets.turbologo.com/blog/pt/2019/07/19133836/mcdonalds-golden-arches-logo-1961.jpg" />
-    <!-- apenas se o estabelecimento estiver fechado -->
-    <div v-if="true" class="close_info">
-      <span>Fechado abre amanhã as 14 horas.</span>
-    </div>
+  <div :style="`background-image: url(${tenantStore.tenant.img})`" class="container-info-detail">
+    <info-detail v-if="tenantStore.tenant.subdomain" info-detail></info-detail>
   </div>
 </template>
 <script>
-export default {
+import { useTenantStore } from '@/store/tenant';
+import InfoDetail from './InfoDetail.vue';
 
+export default {
+  components: {
+    InfoDetail,
+  },
+  data() {
+    return {
+      tenantStore: useTenantStore(),
+    }
+  }
 }
 </script>
 <style>
+.container-info-detail {
+  height: 165px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 140px;
+}
+
+.container-info-detail::after {
+    content: '';
+    position: absolute;
+    height: 165px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+}
+
 .img-hero {
-  height: 290px;
-  max-width: 100%;
+  height: 190px;
+  width: 100%;
 }
 
 .close_info {

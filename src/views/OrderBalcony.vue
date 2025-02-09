@@ -4,26 +4,32 @@
       <header-client></header-client>
     </header>
 
-    <body>
-      <info-detail></info-detail>
+    <body class="d-flex flex-column align-items-center">
+      <!-- <info-detail></info-detail> -->
       <products-list></products-list>
     </body>
   </div>
 </template>
   
 <script>
-import InfoDetail from '@/components/InfoDetail.vue'
 import HeaderClient from '@/components/HeaderClient.vue'
 import ProductsList from '@/components/products/ProductList.vue'
-
+import { useTenantStore } from '@/store/tenant';
 
 export default {
   name: 'App',
   components: {
     HeaderClient,
-    InfoDetail,
-    ProductsList,
-  }
+    ProductsList
+  },
+  data() {
+    return {
+      tenantStore: useTenantStore(),
+    }
+  },
+  beforeMount() {
+    this.tenantStore.getTenant();
+  },
 }
 </script>  
 <style>
