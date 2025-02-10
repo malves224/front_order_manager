@@ -144,7 +144,6 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  padding: 10px 10px 0;
 }
 
 .info-product-modal {

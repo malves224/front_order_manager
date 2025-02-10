@@ -1,42 +1,91 @@
 <template>
-  <div @click="openModal" class="product-info">
-    <div>
-      <div>
-        <h5>{{ item.name }}</h5>
-        <p style="color: var(--bs-gray-500)">breve descrição do produto</p>
-      </div>
-      <h2>R$ {{ item.value }}</h2>
-    </div>
-    <b-img height="80px" :src="item.img_url" />
+  <b-card class="product-card" @click="openModal">
+    <b-row no-gutters align-v="center">
+      <!-- Coluna do Texto -->
+      <b-col cols="8" class="product-text">
+        <h5 class="product-name">{{ item.name }}</h5>
+        <p class="product-description">Breve descrição do produto</p>
+        <h2 class="product-price">R$ {{ item.value }}</h2>
+      </b-col>
+      
+      <!-- Coluna da Imagem -->
+      <b-col cols="4" class="text-center">
+        <b-img class="product-image" :src="item.img_url" />
+      </b-col>
+    </b-row>
+
     <modal-product :item="item"></modal-product>
-    <login-modal :id="`customer-login-modal-${item.id}`"></login-modal>
-  </div>
+  </b-card>
 </template>
+
 <script>
 import ModalProduct from "@/components/products/ModalProduct.vue";
-import LoginModal from "@/components/LoginModal.vue";
 
 export default {
   components: {
-    ModalProduct,
-    LoginModal,
+    ModalProduct
   },
-  props: ['item'],
+  props: ["item"],
   methods: {
     openModal() {
-      this.$bvModal.show(`product-modal-${this.item.id}`)
-    },
-  },
-}
+      this.$bvModal.show(`product-modal-${this.item.id}`);
+    }
+  }
+};
 </script>
-<style>
-.product-info {
+
+<style scoped>
+/* Estilo do card do produto */
+.product-card {
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+  background-color: white;
   display: flex;
-  justify-content: space-evenly;
-  padding: 0 10px;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.modal-product {
-  height: 90vh;
+.product-card:hover {
+  transform: scale(1.02);
+}
+
+/* Ajustando o espaço do conteúdo */
+.product-text {
+  padding-left: 15px;
+}
+
+/* Nome do Produto */
+.product-name {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+/* Descrição do Produto */
+.product-description {
+  font-size: 14px;
+  color: #666;
+  text-align: left;
+  margin-bottom: 8px;
+}
+
+/* Preço do Produto */
+.product-price {
+  font-size: 22px;
+  font-weight: bold;
+  color: #d32f2f;
+  text-align: left;
+}
+
+/* Imagem do Produto */
+.product-image {
+  width: 80px;  /* Aumentando o tamanho da imagem */
+  height: 80px;
+  object-fit: cover;  /* Garante que a imagem preencha bem sem distorção */
+  border-radius: 8px;
 }
 </style>
