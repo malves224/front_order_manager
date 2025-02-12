@@ -2,18 +2,36 @@
   <b-modal :style="{ 'z-index': '1501' }" :id="`customer-login-modal-${id}`" size="lg" ok-only hide-header hide-footer novalidate>
     <b-form @submit.prevent="submit">
       <h2>Por favor, identifique-se para continuar</h2>
-      <b-form-group id="name" label="Nome completo: ">
-        <b-input id="name" v-model="name" placeholder="Ex: João Pedro"></b-input>
-        <b-form-invalid-feedback :state="nameState">
-          Preencha o seu nome completo corretamente.
-        </b-form-invalid-feedback>
-      </b-form-group>
+      
+      <!-- Primeiro o campo de telefone -->
       <b-form-group id="phone" label="Celular: ">
-        <b-input id="phone" v-model="phone" type="text" placeholder="(XX) XXXXX-XXXX" maxlength="15" @input="formatPhone"></b-input>
+        <b-input 
+          id="phone" 
+          v-model="phone" 
+          type="text" 
+          placeholder="(XX) XXXXX-XXXX" 
+          maxlength="15"
+          @input="formatPhone"
+          @blur="handlePhoneBlur"
+          autofocus
+        ></b-input>
         <b-form-invalid-feedback :state="phoneState">
           Número inválido, por favor verifique o número informado.
         </b-form-invalid-feedback>
       </b-form-group>
+
+      <!-- Agora o campo de nome -->
+      <b-form-group id="name" label="Nome completo: ">
+        <b-input 
+          id="name" 
+          v-model="name" 
+          placeholder="Ex: João Pedro"
+        ></b-input>
+        <b-form-invalid-feedback :state="nameState">
+          Preencha o seu nome completo corretamente.
+        </b-form-invalid-feedback>
+      </b-form-group>
+
       <div class="button-container">
         <b-button type="submit" variant="primary">Entrar</b-button>
       </div>
@@ -62,6 +80,12 @@ export default {
       formattedNumber = `(${formattedNumber.slice(0, 2)}) ${formattedNumber.slice(2, 7)}${formattedNumber.slice(7, 11)}`;
       this.phone = formattedNumber;
     },
+    async handlePhoneBlur() {
+      const response = await this.customerService.identify({ phone: this.phone });
+      if (response && response.data && response.data.name) {
+        this.name = response.data.name;
+      }
+    }
   }
 }
 </script>
@@ -69,14 +93,14 @@ export default {
 <style>
 /* Modal */
 .b-modal {
-  border-radius: 8px; /* Deixa as bordas do modal mais suaves */
+  border-radius: 8px; /* Borda suavizada para o modal */
   padding: 30px;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .b-form-group {
-  margin-bottom: 25px; /* Aumentado o espaçamento entre os campos */
+  margin-bottom: 20px; /* Melhorando o espaçamento entre os campos */
 }
 
 .b-input {
@@ -89,7 +113,7 @@ export default {
 }
 
 .b-input:focus {
-  border-color: #007bff; /* Cor do foco para combinar com o botão */
+  border-color: #007bff; /* Cor de foco */
   outline: none;
 }
 
@@ -101,8 +125,8 @@ export default {
 h2 {
   font-size: 22px;
   color: #333;
-  margin-bottom: 30px; /* Ajustado para maior espaçamento */
-  text-align: center; /* Centraliza o título */
+  margin-bottom: 30px;
+  text-align: center; /* Título centralizado */
 }
 
 .b-button {
@@ -117,7 +141,7 @@ h2 {
 }
 
 .b-button:hover {
-  background-color: #0056b3; /* Efeito hover mais suave */
+  background-color: #0056b3; /* Efeito de hover mais suave */
 }
 
 .b-button:focus {
@@ -127,17 +151,17 @@ h2 {
 .button-container {
   display: flex;
   justify-content: center;
-  margin-top: 30px; /* Aumentado o espaçamento acima do botão */
+  margin-top: 30px; /* Mais espaçamento acima do botão */
 }
 
 .b-modal-lg {
-  max-width: 500px; /* Limita a largura do modal para uma visualização mais agradável */
+  max-width: 500px; /* Definindo uma largura máxima agradável */
 }
 
 /* Responsividade */
 @media (max-width: 600px) {
   .b-modal-lg {
-    max-width: 90%;
+    max-width: 90%; /* Modal ocupa 90% da tela em dispositivos móveis */
   }
 }
 </style>
