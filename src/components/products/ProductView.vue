@@ -5,7 +5,7 @@
       <b-col cols="8" class="product-text">
         <h5 class="product-name">{{ item.name }}</h5>
         <p class="product-description">Breve descrição do produto</p>
-        <h2 class="product-price">R$ {{ item.value }}</h2>
+        <h2 class="product-price">{{ $formatCurrency(item.value) }}</h2>
       </b-col>
       
       <!-- Coluna da Imagem -->

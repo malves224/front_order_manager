@@ -1,50 +1,43 @@
 <template>
   <div class="position-nav">
     <NavCart />
-    <div class="nav-client">
-      <div class="nav-item">
-        <router-link to="/order">Inicio</router-link>
-      </div>
-      <div class="nav-item">
-        <router-link to="/order/list">Pedidos</router-link>
-      </div>
-    </div>
+    <van-tabbar v-model="active" active-color="#007bff" inactive-color="#666">
+      <van-tabbar-item to="/order" replace icon="home-o">
+        Início
+      </van-tabbar-item>
+      <van-tabbar-item to="/order/list" replace icon="orders-o">
+        Pedidos
+      </van-tabbar-item>
+    </van-tabbar>
   </div>
 </template>
+
 <script>
-import NavCart from '@/components/cart/NavCart.vue'
+import NavCart from '@/components/cart/NavCart.vue';
 
 export default {
   components: {
-    NavCart
+    NavCart,
   },
-}
+  data() {
+    return {
+      active: 0,
+    };
+  },
+};
 </script>
+
 <style>
 .position-nav {
-  bottom: -10px;
-  left: 0;
+  display: flex;
+  flex-direction: column;
+  bottom: 0;
   width: 100%;
-  height: 120px;
+  background-color: #fff;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
   position: fixed;
-  display: flex;
-  flex-flow: column-reverse;
-}
-
-
-.nav-client {
-  background-color: rgb(255, 255, 255);
-  width: 100%;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-}
-
-.nav-item {
-  height: 100%;
-  margin: 0 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  left: 0;
+  bottom: 0;
 }
 </style>

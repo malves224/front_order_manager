@@ -1,5 +1,5 @@
 <template>
-  <b-modal :style="{ 'z-index': '1501' }" :id="id" size="lg" ok-only hide-header hide-footer novalidate>
+  <b-modal :style="{ 'z-index': '1501' }" :id="`customer-login-modal-${id}`" size="lg" ok-only hide-header hide-footer novalidate>
     <b-form @submit.prevent="submit">
       <h2>Indetifique-se</h2>
       <b-form-group id="name" label="Nome completo: ">
@@ -53,7 +53,7 @@ export default {
 
       const response = await this.customerService.login({ name: this.name, phone: this.phone });
       this.customerStorage.set(response.data);
-      this.$bvModal.hide(this.id);
+      this.$bvModal.hide(`customer-login-modal-${this.id}`);
     },
     formatPhone() {
       let formattedNumber = this.phone.replace(/\D/g, '');

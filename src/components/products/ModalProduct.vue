@@ -23,6 +23,7 @@
         <b-button @click="closeModal" variant="outline-primary">Cancelar</b-button>
       </b-form>
     </body>
+    <login-modal :id="item.id"></login-modal>
   </b-modal>
 </template>
 <script>
@@ -30,8 +31,12 @@ import { useCartStore } from '@/store/cart';
 import { mapStores } from 'pinia';
 import Swal from 'sweetalert2';
 import LocalStorage from '@/services/localStorage/localStorage';
+import LoginModal from '../LoginModal.vue';
 
 export default {
+  components: {
+    LoginModal
+  },
   props: ['item'],
   data() {
     return {

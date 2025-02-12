@@ -12,6 +12,7 @@
     <b-alert :show="showRequiredAdress && !this.cartStore.addressSelected" variant="danger">Por favor insira seu endereço de entrega.</b-alert>
   </div>
 </template>
+
 <script>
 import { useCartStore } from '@/store/cart';
 import { mapStores } from 'pinia';
@@ -47,15 +48,17 @@ export default {
   }
 }
 </script>
+
 <style>
 .position-nav {
-  bottom: -10px;
+  bottom: 0;
   left: 0;
   width: 100%;
-  height: 120px;
   position: fixed;
   display: flex;
-  flex-flow: column-reverse;
+  flex-direction: column;
+  padding-bottom: 50px; /* Espaço para o tabbar */
+  z-index: 1000; /* Assegura que o NavCart fique acima do tabbar */
 }
 
 .cart-info {
@@ -64,7 +67,8 @@ export default {
   justify-content: space-between;
   padding: 8px 10px;
   height: 50px;
-  order: 1
+  position: relative;
+  z-index: 1020; /* Garantir que o NavCart tenha z-index maior que o do tabbar */
 }
 
 .cart-info>a {
@@ -89,3 +93,4 @@ export default {
   max-width: 60%;
 }
 </style>
+  
