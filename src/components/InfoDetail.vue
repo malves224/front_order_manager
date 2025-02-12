@@ -1,13 +1,20 @@
 <template>
-  <div class="card info-detail-container">
-    <b-img class="img-tenant" :src="tenantStore.tenant.img"></b-img>
+  <div class="info-detail-container">
+    <!-- Bloco do logo que “sai” do card -->
+    <div class="img-wrapper">
+      <b-img class="img-tenant" :src="tenantStore.tenant.img"></b-img>
+    </div>
+    <!-- Bloco do conteúdo textual -->
     <div class="title-tenant">
-      <h1 style="margin: 0" class="card-title">{{ tenantStore.tenant.name }}</h1>
-      <span style="color: gray">{{ tenantStore.tenant.description }}</span>
-      <span v-if="tenantStore.tenant.config?.minimumOrder" style="color: gray">Pedido Min {{ $formatCents(tenantStore.tenant.config.minimumOrder) }}</span>
+      <h1 class="card-title">{{ tenantStore.tenant.name }}</h1>
+      <span class="tenant-description">{{ tenantStore.tenant.description }}</span>
+      <span v-if="tenantStore.tenant.config?.minimumOrder" class="tenant-minimum-order">
+        Pedido Min {{ $formatCents(tenantStore.tenant.config.minimumOrder) }}
+      </span>
     </div>
   </div>
 </template>
+
 <script>
 import { useTenantStore } from '@/store/tenant';
 export default {
@@ -18,48 +25,62 @@ export default {
   },
 }
 </script>
-<style>
+
+<style scoped>
 .info-detail-container {
-  max-height: 140px;
-  padding: 8px 15px;
+  position: absolute;
+  top: 130px; /* 🔴 Ajustado para descer mais */
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 15px;
+  height: 110px;
+  padding: 20px 20px 0 100px; /* Espaço à esquerda para o logo */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: 90%;
-  border-radius: 30px;
-  z-index: 999;
-  position: relative;
-  top: 135px;
+  max-width: 400px;
 }
 
-.title-tenant {
-  display: flex;
-  flex-flow: column;
-  align-items: flex-start;
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-  position: relative;
-  bottom: 25px;
-  max-height: 61px;
+/* Bloco do logo – posicionado para “sair” do card */
+.img-wrapper {
+  position: absolute;
+  left: 20px;
+  top: -30px; /* Parte do logo ficará fora do contêiner */
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 4; /* Garante que o logo fique acima do card */
 }
 
 .img-tenant {
-  height: 50px;
-  width: 70px;
-  border-radius: 50%;
-  border: 1px solid var(--bs-gray-200);
-  align-self: center;
-  position: relative;
-  bottom: 35px
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.info-items {
+/* Bloco de texto */
+.title-tenant {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  position: relative;
-  bottom: 35px;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.info-item {
-  background-color: var(--bs-gray-200);
-  color: gray;
+.card-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.2;
+}
+
+.tenant-description,
+.tenant-minimum-order {
+  font-size: 14px;
+  color: #666;
+  margin-top: 5px;
+  line-height: 1.2;
 }
 </style>
